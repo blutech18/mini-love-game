@@ -41,13 +41,15 @@ const ComfortZone: FC = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
+                whileHover={{ scale: 1.03, x: 4 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => handleScenario(s)}
-                className={`w-full p-4 rounded-xl ${colorMap[s.id]} pixel-border
-                           hover:scale-[1.02] active:pixel-border-active transition-all
+                className={`group w-full p-4 rounded-xl ${colorMap[s.id]} pixel-border
+                           hover:shadow-lg transition-all duration-300
                            flex items-center gap-3 cursor-pointer`}
               >
-                <span className="text-2xl">{s.emoji}</span>
-                <span className="font-pixel text-xs">{s.title}</span>
+                <span className="text-2xl group-hover:scale-125 transition-transform duration-300">{s.emoji}</span>
+                <span className="font-pixel text-xs group-hover:tracking-wider transition-all duration-300">{s.title}</span>
               </motion.button>
             ))}
           </motion.div>

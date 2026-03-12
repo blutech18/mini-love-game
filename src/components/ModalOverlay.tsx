@@ -34,7 +34,7 @@ const ModalOverlay: FC<Props> = ({ children }) => {
       >
         <button
           onClick={closeModal}
-          className="absolute top-4 right-4 p-1.5 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-lg bg-muted hover:bg-primary hover:text-primary-foreground hover:rotate-90 hover:scale-110 transition-all duration-300"
         >
           <X size={18} />
         </button>

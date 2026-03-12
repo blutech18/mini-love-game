@@ -39,14 +39,18 @@ const GameButton: FC<{
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 1.2 + index * 0.15, type: "spring", stiffness: 200 }}
+    whileHover={{ scale: 1.07, y: -4 }}
+    whileTap={{ scale: 0.97 }}
     onClick={onClick}
-    className="group flex flex-col items-center gap-3 p-6 rounded-xl bg-card pixel-border
-               hover:scale-105 active:pixel-border-active active:scale-100
-               transition-all duration-150 cursor-pointer"
+    className="group relative flex flex-col items-center gap-3 p-6 rounded-xl bg-card pixel-border
+               hover:shadow-lg hover:shadow-primary/20
+               transition-all duration-300 cursor-pointer overflow-hidden"
   >
-    <span className="text-4xl group-hover:animate-float">{item.emoji}</span>
-    <span className="font-pixel text-xs text-foreground leading-relaxed">{item.label}</span>
-    <span className="text-xs text-muted-foreground font-body">{item.description}</span>
+    {/* Hover glow overlay */}
+    <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:via-transparent group-hover:to-accent/5 transition-all duration-500 rounded-xl" />
+    <span className="text-4xl group-hover:animate-float transition-transform duration-300 group-hover:drop-shadow-lg relative z-10">{item.emoji}</span>
+    <span className="font-pixel text-xs text-foreground leading-relaxed relative z-10 group-hover:text-primary transition-colors duration-300">{item.label}</span>
+    <span className="text-xs text-muted-foreground font-body relative z-10">{item.description}</span>
   </motion.button>
 );
 

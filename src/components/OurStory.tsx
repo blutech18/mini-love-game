@@ -17,16 +17,17 @@ const OurStory: FC = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.15 }}
-              className="relative pl-14"
+              whileHover={{ x: 4 }}
+              className="relative pl-14 group cursor-default"
             >
               {/* Timeline dot */}
-              <div className="absolute left-4 top-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center text-xs">
+              <div className="absolute left-4 top-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center text-xs group-hover:scale-125 group-hover:shadow-md group-hover:shadow-primary/30 transition-all duration-300">
                 {m.emoji}
               </div>
 
-              <div className="bg-muted rounded-lg p-4">
+              <div className="bg-muted rounded-lg p-4 group-hover:bg-card group-hover:shadow-md transition-all duration-300">
                 <span className="text-xs text-muted-foreground font-pixel">{m.date}</span>
-                <h3 className="font-body font-bold text-foreground mt-1">{m.title}</h3>
+                <h3 className="font-body font-bold text-foreground mt-1 group-hover:text-primary transition-colors duration-300">{m.title}</h3>
                 <p className="text-sm text-muted-foreground mt-1">{m.description}</p>
               </div>
             </motion.div>

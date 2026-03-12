@@ -2,7 +2,8 @@ import { type FC } from "react";
 import { motion } from "framer-motion";
 import { playlist } from "@/data/content";
 import { useGameStore } from "@/store/useGameStore";
-import { Play, Pause, SkipForward, SkipBack, Volume2 } from "lucide-react";
+import { Play, Pause, SkipForward, SkipBack, Volume2, Music, Disc3 } from "lucide-react";
+import DynamicIcon from "@/components/DynamicIcon";
 
 const MusicRoom: FC = () => {
   const { currentTrackId, isPlaying, volume, playTrack, pauseTrack, resumeTrack, setVolume } =
@@ -28,16 +29,18 @@ const MusicRoom: FC = () => {
 
   return (
     <div>
-      <h2 className="font-pixel text-sm text-primary mb-6 text-center">🎵 Music Room</h2>
+      <h2 className="font-pixel text-sm text-primary mb-6 text-center flex items-center justify-center gap-2">
+        <Music size={16} /> Music Room
+      </h2>
 
       {/* Now Playing */}
       <div className="bg-muted rounded-xl p-5 mb-5 text-center">
         <motion.div
           animate={{ rotate: isPlaying ? 360 : 0 }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          className="text-5xl mb-3 inline-block"
+          className="text-primary mb-3 inline-block"
         >
-          💿
+          <Disc3 size={48} />
         </motion.div>
         <p className="font-pixel text-xs text-foreground">
           {currentTrack ? currentTrack.title : "Select a track"}
@@ -96,7 +99,9 @@ const MusicRoom: FC = () => {
                 : "hover:bg-muted text-foreground"
               }`}
           >
-            <span className="text-lg">{track.emoji}</span>
+            <div className="text-muted-foreground">
+              <DynamicIcon name={track.icon} size={18} />
+            </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-body font-semibold truncate">{track.title}</p>
               <p className="text-[10px] text-muted-foreground truncate">{track.artist}</p>

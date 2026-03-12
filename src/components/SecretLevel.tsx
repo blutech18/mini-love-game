@@ -1,6 +1,9 @@
 import { type FC } from "react";
 import { motion } from "framer-motion";
 import { secretMessage } from "@/data/content";
+import { Gift, Sparkles, Star, Zap, Heart } from "lucide-react";
+
+const celebrationIcons = [Heart, Sparkles, Star, Zap, Heart];
 
 const SecretLevel: FC = () => {
   return (
@@ -9,9 +12,9 @@ const SecretLevel: FC = () => {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ type: "spring", damping: 10 }}
-        className="text-6xl mb-4"
+        className="text-primary mb-4 flex justify-center"
       >
-        🎉
+        <Gift size={56} />
       </motion.div>
 
       <h2 className="font-pixel text-sm text-primary mb-4">{secretMessage.title}</h2>
@@ -31,17 +34,17 @@ const SecretLevel: FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="mt-6 flex justify-center gap-2"
+        className="mt-6 flex justify-center gap-3"
       >
-        {["💖", "✨", "🌟", "💫", "🦋"].map((emoji, i) => (
-          <motion.span
+        {celebrationIcons.map((Icon, i) => (
+          <motion.div
             key={i}
-            className="text-2xl"
+            className="text-primary"
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
           >
-            {emoji}
-          </motion.span>
+            <Icon size={22} />
+          </motion.div>
         ))}
       </motion.div>
     </div>

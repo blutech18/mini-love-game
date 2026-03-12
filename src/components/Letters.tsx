@@ -1,6 +1,9 @@
 import { type FC, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { letters, type Letter } from "@/data/content";
+import { ArrowLeft } from "lucide-react";
+import DynamicIcon from "@/components/DynamicIcon";
+import { Mail } from "lucide-react";
 
 const TypewriterBody: FC<{ text: string }> = ({ text }) => {
   const [displayed, setDisplayed] = useState("");
@@ -34,7 +37,9 @@ const Letters: FC = () => {
 
   return (
     <div>
-      <h2 className="font-pixel text-sm text-primary mb-6 text-center">💌 Letters</h2>
+      <h2 className="font-pixel text-sm text-primary mb-6 text-center flex items-center justify-center gap-2">
+        <Mail size={16} /> Letters
+      </h2>
 
       <AnimatePresence mode="wait">
         {!selectedLetter ? (
@@ -57,7 +62,9 @@ const Letters: FC = () => {
                 className="group flex flex-col items-center gap-2 p-4 rounded-lg bg-envelope hover:bg-envelope-flap
                            transition-all duration-300 cursor-pointer pixel-border hover:shadow-md hover:shadow-primary/15"
               >
-                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{letter.emoji}</span>
+                <div className="text-muted-foreground group-hover:text-primary group-hover:scale-110 transition-all duration-300">
+                  <DynamicIcon name={letter.icon} size={28} />
+                </div>
                 <span className="font-pixel text-[8px] text-foreground leading-tight text-center group-hover:text-primary transition-colors duration-300">{letter.title}</span>
                 <span className="text-[10px] text-muted-foreground">{letter.date}</span>
               </motion.button>
@@ -73,13 +80,15 @@ const Letters: FC = () => {
           >
             <button
               onClick={() => setSelectedLetter(null)}
-              className="mb-4 text-xs text-muted-foreground hover:text-primary font-pixel transition-colors"
+              className="mb-4 text-xs text-muted-foreground hover:text-primary font-pixel transition-colors flex items-center gap-1"
             >
-              ← Back to letters
+              <ArrowLeft size={12} /> Back to letters
             </button>
             <div className="bg-muted rounded-lg p-5">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">{selectedLetter.emoji}</span>
+                <div className="text-primary">
+                  <DynamicIcon name={selectedLetter.icon} size={22} />
+                </div>
                 <div>
                   <h3 className="font-pixel text-xs text-primary">{selectedLetter.title}</h3>
                   <span className="text-xs text-muted-foreground">{selectedLetter.date}</span>

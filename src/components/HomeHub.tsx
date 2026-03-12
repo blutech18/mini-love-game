@@ -2,6 +2,10 @@ import { type FC, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useGameStore } from "@/store/useGameStore";
 import { menuItems, RECIPIENT_NAME, type ModalType } from "@/data/content";
+import DynamicIcon from "@/components/DynamicIcon";
+import { Sparkles, Star, Flower2, Heart, Zap, Feather, Gem } from "lucide-react";
+
+const floatingIcons = [Sparkles, Star, Flower2, Heart, Zap, Feather];
 
 const TypewriterText: FC<{ text: string; speed?: number }> = ({ text, speed = 60 }) => {
   const [displayed, setDisplayed] = useState("");
@@ -46,9 +50,10 @@ const GameButton: FC<{
                hover:shadow-lg hover:shadow-primary/20
                transition-all duration-300 cursor-pointer overflow-hidden"
   >
-    {/* Hover glow overlay */}
     <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:via-transparent group-hover:to-accent/5 transition-all duration-500 rounded-xl" />
-    <span className="text-4xl group-hover:animate-float transition-transform duration-300 group-hover:drop-shadow-lg relative z-10">{item.emoji}</span>
+    <div className="text-muted-foreground group-hover:text-primary transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-lg relative z-10">
+      <DynamicIcon name={item.icon} size={32} />
+    </div>
     <span className="font-pixel text-xs text-foreground leading-relaxed relative z-10 group-hover:text-primary transition-colors duration-300">{item.label}</span>
     <span className="text-xs text-muted-foreground font-body relative z-10">{item.description}</span>
   </motion.button>
@@ -62,16 +67,16 @@ const HomeHub: FC = () => {
     openModal(id as ModalType);
   };
 
-  const welcomeText = `Hi ${RECIPIENT_NAME}, Welcome to your personalized hub... 💖`;
+  const welcomeText = `Hi ${RECIPIENT_NAME}, Welcome to your personalized hub...`;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(6)].map((_, i) => (
+        {floatingIcons.map((Icon, i) => (
           <motion.div
             key={i}
-            className="absolute text-2xl opacity-20"
+            className="absolute text-muted-foreground/20"
             initial={{ opacity: 0 }}
             animate={{
               opacity: [0.1, 0.3, 0.1],
@@ -87,7 +92,7 @@ const HomeHub: FC = () => {
               top: `${10 + (i % 3) * 30}%`,
             }}
           >
-            {["✨", "💫", "🌸", "💖", "⭐", "🦋"][i]}
+            <Icon size={20} />
           </motion.div>
         ))}
       </div>
@@ -103,7 +108,7 @@ const HomeHub: FC = () => {
           <TypewriterText text={welcomeText} speed={50} />
         </h1>
         <p className="text-muted-foreground font-body text-sm">
-          Choose a room to explore ↓
+          Choose a room to explore
         </p>
       </motion.div>
 
@@ -129,7 +134,6 @@ const AnimatedSecretButton: FC = () => {
   const { isSecretUnlocked, openModal } = useGameStore();
 
   if (!isSecretUnlocked) {
-    // Hidden pixel - barely visible
     return (
       <button
         onClick={() => useGameStore.getState().unlockSecret()}
@@ -147,9 +151,9 @@ const AnimatedSecretButton: FC = () => {
       onClick={() => openModal("SECRET")}
       className="mt-8 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-pixel text-xs
                  pixel-border glow-warm hover:scale-105 active:pixel-border-active
-                 transition-all duration-150 animate-float"
+                 transition-all duration-150 animate-float flex items-center gap-2"
     >
-      🔮 Secret Level
+      <Gem size={16} /> Secret Level
     </motion.button>
   );
 };

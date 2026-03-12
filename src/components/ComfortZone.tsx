@@ -2,6 +2,8 @@ import { type FC, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { comfortScenarios, type ComfortScenario } from "@/data/content";
 import { useGameStore } from "@/store/useGameStore";
+import { HeartHandshake, ArrowLeft } from "lucide-react";
+import DynamicIcon from "@/components/DynamicIcon";
 
 const ComfortZone: FC = () => {
   const [activeScenario, setActiveScenario] = useState<ComfortScenario | null>(null);
@@ -21,7 +23,9 @@ const ComfortZone: FC = () => {
 
   return (
     <div>
-      <h2 className="font-pixel text-sm text-primary mb-6 text-center">🫂 Comfort Zone</h2>
+      <h2 className="font-pixel text-sm text-primary mb-6 text-center flex items-center justify-center gap-2">
+        <HeartHandshake size={16} /> Comfort Zone
+      </h2>
 
       <AnimatePresence mode="wait">
         {!activeScenario ? (
@@ -48,7 +52,9 @@ const ComfortZone: FC = () => {
                            hover:shadow-lg transition-all duration-300
                            flex items-center gap-3 cursor-pointer`}
               >
-                <span className="text-2xl group-hover:scale-125 transition-transform duration-300">{s.emoji}</span>
+                <div className="group-hover:scale-125 transition-transform duration-300">
+                  <DynamicIcon name={s.icon} size={24} />
+                </div>
                 <span className="font-pixel text-xs group-hover:tracking-wider transition-all duration-300">{s.title}</span>
               </motion.button>
             ))}
@@ -66,11 +72,13 @@ const ComfortZone: FC = () => {
                 setActiveScenario(null);
                 setNightMode(false);
               }}
-              className="mb-4 text-xs text-muted-foreground hover:text-primary font-pixel transition-colors"
+              className="mb-4 text-xs text-muted-foreground hover:text-primary font-pixel transition-colors flex items-center gap-1 mx-auto"
             >
-              ← Back
+              <ArrowLeft size={12} /> Back
             </button>
-            <div className="text-5xl mb-4">{activeScenario.emoji}</div>
+            <div className="text-primary mb-4 flex justify-center">
+              <DynamicIcon name={activeScenario.icon} size={48} />
+            </div>
             <p className="text-foreground font-body leading-relaxed mb-4">
               {activeScenario.message}
             </p>

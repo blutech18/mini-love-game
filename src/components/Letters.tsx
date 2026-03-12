@@ -51,12 +51,14 @@ const Letters: FC = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
+                whileHover={{ scale: 1.08, rotate: [-1, 1, 0], y: -3 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedLetter(letter)}
-                className="flex flex-col items-center gap-2 p-4 rounded-lg bg-envelope hover:bg-envelope-flap
-                           transition-colors cursor-pointer pixel-border hover:scale-105 active:pixel-border-active"
+                className="group flex flex-col items-center gap-2 p-4 rounded-lg bg-envelope hover:bg-envelope-flap
+                           transition-all duration-300 cursor-pointer pixel-border hover:shadow-md hover:shadow-primary/15"
               >
-                <span className="text-3xl">{letter.emoji}</span>
-                <span className="font-pixel text-[8px] text-foreground leading-tight text-center">{letter.title}</span>
+                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{letter.emoji}</span>
+                <span className="font-pixel text-[8px] text-foreground leading-tight text-center group-hover:text-primary transition-colors duration-300">{letter.title}</span>
                 <span className="text-[10px] text-muted-foreground">{letter.date}</span>
               </motion.button>
             ))}

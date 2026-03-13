@@ -34,33 +34,59 @@ const TypewriterText: FC<{ text: string; speed?: number }> = ({ text, speed = 60
   );
 };
 
+const iconColors = [
+  "text-primary/30",
+  "text-secondary/30",
+  "text-accent/30",
+  "text-primary/20",
+  "text-secondary/20",
+  "text-accent/20",
+];
+
 const GameButton: FC<{
   item: (typeof menuItems)[number];
   index: number;
   onClick: () => void;
 }> = ({ item, index, onClick }) => (
   <motion.button
-    initial={{ opacity: 0, y: 20 }}
+    initial={{ opacity: 0, y: 24 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 1.2 + index * 0.15, type: "spring", stiffness: 200 }}
-    whileHover={{ scale: 1.07, y: -4 }}
-    whileTap={{ scale: 0.97 }}
+    transition={{ delay: 1.2 + index * 0.12, type: "spring", stiffness: 180, damping: 18 }}
+    whileHover={{ scale: 1.05, y: -6 }}
+    whileTap={{ scale: 0.96 }}
     onClick={onClick}
-    className="group relative flex flex-col items-center gap-2 sm:gap-3 p-4 sm:p-5 md:p-6 rounded-xl bg-card pixel-border
-               hover:shadow-lg hover:shadow-primary/20
-               transition-all duration-300 cursor-pointer overflow-hidden"
+    className="group relative flex flex-col items-center gap-2 sm:gap-3 p-4 sm:p-5 md:p-6 rounded-2xl bg-card
+               pixel-border hover-lift
+               cursor-pointer overflow-hidden"
   >
-    <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:via-transparent group-hover:to-accent/5 transition-all duration-500 rounded-xl" />
-    <div className="text-muted-foreground group-hover:text-primary transition-all duration-300 group-hover:scale-110 group-hover:drop-shadow-lg relative z-10">
-      <DynamicIcon name={item.icon} size={32} />
+    {/* Hover gradient overlay */}
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 via-transparent to-accent/0
+                    group-hover:from-primary/8 group-hover:to-accent/8
+                    transition-all duration-500" />
+
+    {/* Icon */}
+    <div className="relative z-10 p-2.5 sm:p-3 rounded-xl bg-muted/60 group-hover:bg-primary/15
+                    transition-all duration-300 group-hover:scale-110">
+      <div className="text-muted-foreground group-hover:text-primary transition-colors duration-300">
+        <DynamicIcon name={item.icon} size={28} />
+      </div>
     </div>
-    <span className="font-pixel text-xs text-foreground leading-relaxed relative z-10 group-hover:text-primary transition-colors duration-300">{item.label}</span>
-    <span className="text-xs text-muted-foreground font-body relative z-10">{item.description}</span>
+
+    {/* Label */}
+    <span className="font-pixel text-[10px] sm:text-xs text-foreground leading-relaxed relative z-10
+                     group-hover:text-primary transition-colors duration-300">
+      {item.label}
+    </span>
+
+    {/* Description */}
+    <span className="text-[10px] sm:text-xs text-muted-foreground font-body relative z-10 leading-tight text-center">
+      {item.description}
+    </span>
   </motion.button>
 );
 
 const HomeHub: FC = () => {
-  const { openModal, addSecretClick, isSecretUnlocked } = useGameStore();
+  const { openModal, addSecretClick } = useGameStore();
 
   const handleButtonClick = (id: string) => {
     addSecretClick(id);
@@ -70,50 +96,57 @@ const HomeHub: FC = () => {
   const welcomeText = `Hi ${RECIPIENT_NAME}, Welcome to your personalized hub...`;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-3 sm:px-4 md:px-6 py-8 sm:py-12 relative overflow-hidden">
-      {/* Background decorations */}
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12 relative overflow-hidden">
+      {/* Background floating icons */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {floatingIcons.map((Icon, i) => (
           <motion.div
             key={i}
-            className="absolute text-muted-foreground/20"
+            className={`absolute ${iconColors[i]}`}
             initial={{ opacity: 0 }}
             animate={{
-              opacity: [0.1, 0.3, 0.1],
-              y: [0, -20, 0],
+              opacity: [0.15, 0.35, 0.15],
+              y: [0, -25, 0],
+              rotate: [0, 10, -10, 0],
             }}
             transition={{
-              duration: 3 + i,
+              duration: 4 + i * 0.8,
               repeat: Infinity,
-              delay: i * 0.5,
+              delay: i * 0.7,
+              ease: "easeInOut",
             }}
             style={{
-              left: `${15 + i * 15}%`,
-              top: `${10 + (i % 3) * 30}%`,
+              left: `${12 + i * 14}%`,
+              top: `${8 + (i % 3) * 30}%`,
             }}
           >
-            <Icon size={20} />
+            <Icon size={18 + (i % 3) * 4} />
           </motion.div>
         ))}
       </div>
 
       {/* Hero */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center mb-8 sm:mb-12 max-w-sm sm:max-w-md"
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="text-center mb-8 sm:mb-12 max-w-xs sm:max-w-sm md:max-w-md"
       >
-        <h1 className="font-pixel text-xs sm:text-sm md:text-lg text-primary mb-4 sm:mb-6 leading-relaxed">
+        <h1 className="font-pixel text-xs sm:text-sm md:text-base text-primary mb-4 sm:mb-6 leading-[2] sm:leading-[2.2]">
           <TypewriterText text={welcomeText} speed={50} />
         </h1>
-        <p className="text-muted-foreground font-body text-sm">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3, duration: 0.8 }}
+          className="text-muted-foreground font-body text-sm sm:text-base"
+        >
           Choose a room to explore
-        </p>
+        </motion.p>
       </motion.div>
 
       {/* Navigation Grid */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 w-full max-w-xs sm:max-w-sm md:max-w-md">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5 w-full max-w-[280px] sm:max-w-sm md:max-w-md">
         {menuItems.map((item, i) => (
           <GameButton
             key={item.id}
@@ -126,7 +159,38 @@ const HomeHub: FC = () => {
 
       {/* Secret Level Button */}
       <AnimatedSecretButton />
+
+      {/* Now playing indicator */}
+      <NowPlayingIndicator />
     </div>
+  );
+};
+
+const NowPlayingIndicator: FC = () => {
+  const { isPlaying, currentTrackId } = useGameStore();
+
+  if (!isPlaying || !currentTrackId) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-full glass
+                 flex items-center gap-2 text-xs text-muted-foreground font-body
+                 shadow-lg shadow-foreground/5"
+    >
+      <div className="flex gap-0.5 items-end h-3">
+        {[1, 2, 3].map((bar) => (
+          <motion.div
+            key={bar}
+            className="w-0.5 bg-primary rounded-full"
+            animate={{ height: [3, 10, 5, 12, 3] }}
+            transition={{ duration: 0.8, repeat: Infinity, delay: bar * 0.12 }}
+          />
+        ))}
+      </div>
+      <span>Now playing</span>
+    </motion.div>
   );
 };
 
@@ -137,7 +201,7 @@ const AnimatedSecretButton: FC = () => {
     return (
       <button
         onClick={() => useGameStore.getState().unlockSecret()}
-        className="mt-8 w-2 h-2 rounded-full bg-muted-foreground/10 hover:bg-primary/50 transition-colors cursor-default"
+        className="mt-8 w-2 h-2 rounded-full bg-muted-foreground/10 hover:bg-primary/50 transition-colors duration-500 cursor-default"
         title=""
       />
     );
@@ -147,13 +211,13 @@ const AnimatedSecretButton: FC = () => {
     <motion.button
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: "spring", damping: 15 }}
+      transition={{ type: "spring", damping: 12 }}
       onClick={() => openModal("SECRET")}
-      className="mt-8 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-pixel text-xs
-                 pixel-border glow-warm hover:scale-105 active:pixel-border-active
-                 transition-all duration-150 animate-float flex items-center gap-2"
+      className="mt-8 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-primary text-primary-foreground font-pixel text-[10px] sm:text-xs
+                 glow-primary hover:scale-105 active:scale-95
+                 transition-all duration-200 animate-float flex items-center gap-2"
     >
-      <Gem size={16} /> Secret Level
+      <Gem size={14} /> Secret Level
     </motion.button>
   );
 };

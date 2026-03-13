@@ -104,7 +104,7 @@ const HomeHub: FC = () => {
         transition={{ duration: 0.8 }}
         className="text-center mb-8 sm:mb-12 max-w-sm sm:max-w-md"
       >
-        <h1 className="font-pixel text-lg sm:text-xl text-primary mb-6 leading-relaxed">
+        <h1 className="font-pixel text-xs sm:text-sm md:text-lg text-primary mb-4 sm:mb-6 leading-relaxed">
           <TypewriterText text={welcomeText} speed={50} />
         </h1>
         <p className="text-muted-foreground font-body text-sm">

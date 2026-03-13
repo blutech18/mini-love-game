@@ -87,7 +87,7 @@ const MusicRoom: FC = () => {
       </div>
 
       {/* Tracklist */}
-      <div className="space-y-1.5 max-h-48 overflow-y-auto">
+      <div className="space-y-1.5 max-h-36 sm:max-h-48 overflow-y-auto">
         {playlist.map((track) => (
           <motion.button
             key={track.id}

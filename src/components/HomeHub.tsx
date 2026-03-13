@@ -46,7 +46,7 @@ const GameButton: FC<{
     whileHover={{ scale: 1.07, y: -4 }}
     whileTap={{ scale: 0.97 }}
     onClick={onClick}
-    className="group relative flex flex-col items-center gap-3 p-6 rounded-xl bg-card pixel-border
+    className="group relative flex flex-col items-center gap-2 sm:gap-3 p-4 sm:p-5 md:p-6 rounded-xl bg-card pixel-border
                hover:shadow-lg hover:shadow-primary/20
                transition-all duration-300 cursor-pointer overflow-hidden"
   >

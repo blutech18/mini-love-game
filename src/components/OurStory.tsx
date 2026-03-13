@@ -27,7 +27,7 @@ const OurStory: FC = () => {
                 <DynamicIcon name={m.icon} size={14} />
               </div>
 
-              <div className="bg-muted rounded-lg p-4 group-hover:bg-card group-hover:shadow-md transition-all duration-300">
+              <div className="bg-muted rounded-lg p-3 sm:p-4 group-hover:bg-card group-hover:shadow-md transition-all duration-300">
                 <span className="text-xs text-muted-foreground font-pixel">{m.date}</span>
                 <h3 className="font-body font-bold text-foreground mt-1 group-hover:text-primary transition-colors duration-300">{m.title}</h3>
                 <p className="text-sm text-muted-foreground mt-1">{m.description}</p>

@@ -30,7 +30,7 @@ const ModalOverlay: FC<Props> = ({ children }) => {
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 20 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative z-10 w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-xl bg-card pixel-border p-6"
+        className="relative z-10 w-full max-w-[95vw] sm:max-w-md md:max-w-lg max-h-[90vh] sm:max-h-[85vh] overflow-y-auto rounded-xl bg-card pixel-border p-4 sm:p-5 md:p-6"
       >
         <button
           onClick={closeModal}

@@ -48,7 +48,7 @@ const Letters: FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="grid grid-cols-3 gap-3"
+            className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3"
           >
             {letters.map((letter, i) => (
               <motion.button

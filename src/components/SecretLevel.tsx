@@ -9,23 +9,30 @@ const SecretLevel: FC = () => {
   return (
     <div className="text-center">
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", damping: 10 }}
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: "spring", damping: 10, stiffness: 100 }}
         className="text-primary mb-4 flex justify-center"
       >
-        <Gift size={56} />
+        <Gift size={48} />
       </motion.div>
 
-      <h2 className="font-pixel text-sm text-primary mb-4">{secretMessage.title}</h2>
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="font-pixel text-xs sm:text-sm text-primary mb-4"
+      >
+        {secretMessage.title}
+      </motion.h2>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="bg-muted rounded-xl p-6 glow-warm"
+        transition={{ delay: 0.5, type: "spring" }}
+        className="bg-muted/70 rounded-2xl p-5 sm:p-6 glow-warm"
       >
-        <p className="text-sm text-foreground font-body leading-relaxed">
+        <p className="text-sm sm:text-base text-foreground font-body leading-relaxed">
           {secretMessage.message}
         </p>
       </motion.div>
@@ -40,10 +47,10 @@ const SecretLevel: FC = () => {
           <motion.div
             key={i}
             className="text-primary"
-            animate={{ y: [0, -10, 0] }}
+            animate={{ y: [0, -10, 0], scale: [1, 1.15, 1] }}
             transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
           >
-            <Icon size={22} />
+            <Icon size={20} />
           </motion.div>
         ))}
       </motion.div>

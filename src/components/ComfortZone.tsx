@@ -23,7 +23,7 @@ const ComfortZone: FC = () => {
 
   return (
     <div>
-      <h2 className="font-pixel text-sm text-primary mb-6 text-center flex items-center justify-center gap-2">
+      <h2 className="font-pixel text-xs sm:text-sm text-primary mb-5 sm:mb-6 text-center flex items-center justify-center gap-2">
         <HeartHandshake size={16} /> Comfort Zone
       </h2>
 
@@ -33,10 +33,11 @@ const ComfortZone: FC = () => {
             key="buttons"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="space-y-3"
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.25 }}
+            className="space-y-2.5 sm:space-y-3"
           >
-            <p className="text-sm text-muted-foreground text-center mb-4 font-body">
+            <p className="text-sm text-muted-foreground text-center mb-4 sm:mb-5 font-body leading-relaxed">
               Hey, I'm here for you. What do you need right now?
             </p>
             {comfortScenarios.map((s, i) => (
@@ -44,18 +45,20 @@ const ComfortZone: FC = () => {
                 key={s.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.03, x: 4 }}
-                whileTap={{ scale: 0.98 }}
+                transition={{ delay: i * 0.1, duration: 0.3 }}
+                whileHover={{ scale: 1.02, x: 6 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => handleScenario(s)}
-                className={`group w-full p-4 rounded-xl ${colorMap[s.id]} pixel-border
+                className={`group w-full p-4 rounded-xl ${colorMap[s.id]}
                            hover:shadow-lg transition-all duration-300
-                           flex items-center gap-3 cursor-pointer`}
+                           flex items-center gap-3 cursor-pointer active:scale-[0.98]`}
               >
-                <div className="group-hover:scale-125 transition-transform duration-300">
-                  <DynamicIcon name={s.icon} size={24} />
+                <div className="p-2 rounded-lg bg-background/15 group-hover:scale-110 transition-transform duration-300">
+                  <DynamicIcon name={s.icon} size={22} />
                 </div>
-                <span className="font-pixel text-xs group-hover:tracking-wider transition-all duration-300">{s.title}</span>
+                <span className="font-pixel text-[10px] sm:text-xs group-hover:tracking-wider transition-all duration-300">
+                  {s.title}
+                </span>
               </motion.button>
             ))}
           </motion.div>
@@ -65,6 +68,7 @@ const ComfortZone: FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
+            transition={{ type: "spring", damping: 25 }}
             className="text-center"
           >
             <button
@@ -72,19 +76,35 @@ const ComfortZone: FC = () => {
                 setActiveScenario(null);
                 setNightMode(false);
               }}
-              className="mb-4 text-xs text-muted-foreground hover:text-primary font-pixel transition-colors flex items-center gap-1 mx-auto"
+              className="mb-4 text-xs text-muted-foreground hover:text-primary font-body font-semibold transition-all flex items-center gap-1.5 mx-auto
+                         hover:-translate-x-1 duration-200"
             >
-              <ArrowLeft size={12} /> Back
+              <ArrowLeft size={14} /> Back
             </button>
-            <div className="text-primary mb-4 flex justify-center">
-              <DynamicIcon name={activeScenario.icon} size={48} />
-            </div>
-            <p className="text-foreground font-body leading-relaxed mb-4">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.15, type: "spring" }}
+              className="text-primary mb-4 flex justify-center"
+            >
+              <DynamicIcon name={activeScenario.icon} size={44} />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-foreground font-body leading-relaxed mb-4 text-sm sm:text-base"
+            >
               {activeScenario.message}
-            </p>
-            <p className="text-sm text-muted-foreground font-body italic">
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="text-xs sm:text-sm text-muted-foreground font-body italic"
+            >
               {activeScenario.submessage}
-            </p>
+            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>

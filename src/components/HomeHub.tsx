@@ -70,7 +70,7 @@ const HomeHub: FC = () => {
   const welcomeText = `Hi ${RECIPIENT_NAME}, Welcome to your personalized hub...`;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center px-3 sm:px-4 md:px-6 py-8 sm:py-12 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {floatingIcons.map((Icon, i) => (

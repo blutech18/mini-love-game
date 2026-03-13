@@ -1,10 +1,10 @@
-# Welcome to your project
+# Mini Love Game
 
 ## Project info
 
-Add a short description of your project and any important links here.
+Mini Love Game is a small web game built with React and Vite. Use it to explore simple game mechanics around choices, affection, and outcomes.
 
-## How can I edit this code?
+## How can I run and edit this code?
 
 There are several ways of working on this application locally.
 
@@ -18,10 +18,10 @@ Follow these steps to get started:
 
 ```sh
 # Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+git clone https://github.com/blutech18/mini-love-game.git
 
 # Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+cd mini-love-game
 
 # Step 3: Install the necessary dependencies.
 npm i

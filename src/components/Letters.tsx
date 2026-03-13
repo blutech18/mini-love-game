@@ -48,7 +48,7 @@ const Letters: FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="grid grid-cols-3 gap-3"
+            className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3"
           >
             {letters.map((letter, i) => (
               <motion.button
@@ -59,7 +59,7 @@ const Letters: FC = () => {
                 whileHover={{ scale: 1.08, rotate: [-1, 1, 0], y: -3 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedLetter(letter)}
-                className="group flex flex-col items-center gap-2 p-4 rounded-lg bg-envelope hover:bg-envelope-flap
+                className="group flex flex-col items-center gap-1.5 sm:gap-2 p-3 sm:p-4 rounded-lg bg-envelope hover:bg-envelope-flap
                            transition-all duration-300 cursor-pointer pixel-border hover:shadow-md hover:shadow-primary/15"
               >
                 <div className="text-muted-foreground group-hover:text-primary group-hover:scale-110 transition-all duration-300">

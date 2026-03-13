@@ -46,7 +46,7 @@ const GameButton: FC<{
     whileHover={{ scale: 1.07, y: -4 }}
     whileTap={{ scale: 0.97 }}
     onClick={onClick}
-    className="group relative flex flex-col items-center gap-3 p-6 rounded-xl bg-card pixel-border
+    className="group relative flex flex-col items-center gap-2 sm:gap-3 p-4 sm:p-5 md:p-6 rounded-xl bg-card pixel-border
                hover:shadow-lg hover:shadow-primary/20
                transition-all duration-300 cursor-pointer overflow-hidden"
   >
@@ -70,7 +70,7 @@ const HomeHub: FC = () => {
   const welcomeText = `Hi ${RECIPIENT_NAME}, Welcome to your personalized hub...`;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center px-3 sm:px-4 md:px-6 py-8 sm:py-12 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {floatingIcons.map((Icon, i) => (
@@ -102,9 +102,9 @@ const HomeHub: FC = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="text-center mb-12 max-w-md"
+        className="text-center mb-8 sm:mb-12 max-w-sm sm:max-w-md"
       >
-        <h1 className="font-pixel text-lg sm:text-xl text-primary mb-6 leading-relaxed">
+        <h1 className="font-pixel text-xs sm:text-sm md:text-lg text-primary mb-4 sm:mb-6 leading-relaxed">
           <TypewriterText text={welcomeText} speed={50} />
         </h1>
         <p className="text-muted-foreground font-body text-sm">
@@ -113,7 +113,7 @@ const HomeHub: FC = () => {
       </motion.div>
 
       {/* Navigation Grid */}
-      <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-md">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 w-full max-w-xs sm:max-w-sm md:max-w-md">
         {menuItems.map((item, i) => (
           <GameButton
             key={item.id}

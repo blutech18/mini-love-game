@@ -113,7 +113,7 @@ const HomeHub: FC = () => {
       </motion.div>
 
       {/* Navigation Grid */}
-      <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-md">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 w-full max-w-xs sm:max-w-sm md:max-w-md">
         {menuItems.map((item, i) => (
           <GameButton
             key={item.id}

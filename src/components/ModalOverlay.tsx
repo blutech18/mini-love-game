@@ -46,7 +46,7 @@ const ModalOverlay: FC<Props> = ({ children }) => {
 
         <button
           onClick={closeModal}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-muted/80 hover:bg-primary hover:text-primary-foreground
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-50 p-2 rounded-full bg-muted/80 hover:bg-primary hover:text-primary-foreground
                      transition-all duration-300 hover:rotate-90 hover:scale-110 active:scale-95"
           aria-label="Close"
         >

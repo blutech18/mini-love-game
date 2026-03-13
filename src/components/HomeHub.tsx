@@ -102,7 +102,7 @@ const HomeHub: FC = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="text-center mb-12 max-w-md"
+        className="text-center mb-8 sm:mb-12 max-w-sm sm:max-w-md"
       >
         <h1 className="font-pixel text-lg sm:text-xl text-primary mb-6 leading-relaxed">
           <TypewriterText text={welcomeText} speed={50} />

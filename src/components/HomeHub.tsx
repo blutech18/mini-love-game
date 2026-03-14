@@ -1,7 +1,7 @@
 import { type FC, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useGameStore } from "@/store/useGameStore";
-import { menuItems, RECIPIENT_NAME, type ModalType } from "@/data/content";
+import { menuItems, type ModalType } from "@/data/content";
 import DynamicIcon from "@/components/DynamicIcon";
 import { Sparkles, Star, Flower2, Heart, Zap, Feather, Gem } from "lucide-react";
 
@@ -27,9 +27,14 @@ const TypewriterText: FC<{ text: string; speed?: number }> = ({ text, speed = 60
   }, [text, speed]);
 
   return (
-    <span>
-      {displayed}
-      {!done && <span className="cursor-blink" />}
+    <span className="grid">
+      <span className="invisible col-start-1 row-start-1" aria-hidden="true">
+        {text}
+      </span>
+      <span className="col-start-1 row-start-1">
+        {displayed}
+        {!done && <span className="cursor-blink" />}
+      </span>
     </span>
   );
 };
@@ -93,7 +98,7 @@ const HomeHub: FC = () => {
     openModal(id as ModalType);
   };
 
-  const welcomeText = `Hi ${RECIPIENT_NAME}, Welcome to your personalized hub...`;
+  const welcomeText = "Hi babi, welcome to our little space on the internet…";
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12 relative overflow-hidden">

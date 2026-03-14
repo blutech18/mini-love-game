@@ -2,12 +2,21 @@ import { type FC } from "react";
 import { motion } from "framer-motion";
 import { playlist } from "@/data/content";
 import { useGameStore } from "@/store/useGameStore";
+import { useAudioProgress } from "@/contexts/AudioProgressContext";
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Music, Disc3 } from "lucide-react";
 import DynamicIcon from "@/components/DynamicIcon";
+
+const formatTime = (seconds: number) => {
+  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+};
 
 const MusicRoom: FC = () => {
   const { currentTrackId, isPlaying, volume, playTrack, pauseTrack, resumeTrack, setVolume } =
     useGameStore();
+  const audioProgress = useAudioProgress();
 
   const currentIndex = playlist.findIndex((t) => t.id === currentTrackId);
   const currentTrack = currentIndex >= 0 ? playlist[currentIndex] : null;
@@ -28,13 +37,13 @@ const MusicRoom: FC = () => {
   };
 
   return (
-    <div>
-      <h2 className="font-pixel text-xs sm:text-sm text-primary mb-5 sm:mb-6 text-center flex items-center justify-center gap-2">
+    <div className="flex flex-col h-full">
+      <h2 className="font-pixel text-xs sm:text-sm text-primary mb-5 sm:mb-6 text-center flex items-center justify-center gap-2 shrink-0">
         <Music size={16} /> Music Room
       </h2>
 
       {/* Now Playing Card */}
-      <div className="bg-gradient-to-br from-muted to-muted/60 rounded-2xl p-5 sm:p-6 mb-5 text-center relative overflow-hidden">
+      <div className="bg-gradient-to-br from-muted to-muted/60 rounded-2xl py-8 sm:py-10 px-5 sm:px-6 mb-5 text-center relative overflow-hidden shrink-0 min-h-[200px] sm:min-h-[220px] flex flex-col items-center justify-center">
         {/* Decorative ring */}
         <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
           <div className="w-40 h-40 rounded-full border-[3px] border-primary" />
@@ -43,7 +52,7 @@ const MusicRoom: FC = () => {
         <motion.div
           animate={{ rotate: isPlaying ? 360 : 0 }}
           transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          className="text-primary mb-3 inline-block"
+          className="text-primary mb-4 inline-block"
         >
           <Disc3 size={44} />
         </motion.div>
@@ -55,8 +64,27 @@ const MusicRoom: FC = () => {
         </p>
       </div>
 
+      {/* Progress / Seek bar */}
+      {audioProgress && currentTrack && (
+        <div className="mb-5 shrink-0 px-2 sm:px-4">
+          <input
+            type="range"
+            min={0}
+            max={audioProgress.duration || 100}
+            step={0.1}
+            value={audioProgress.currentTime}
+            onChange={(e) => audioProgress.seek(Number(e.target.value))}
+            className="w-full h-1.5 accent-primary cursor-pointer appearance-none bg-muted rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-sm"
+          />
+          <div className="flex justify-between mt-1 text-[10px] text-muted-foreground font-body">
+            <span>{formatTime(audioProgress.currentTime)}</span>
+            <span>{formatTime(audioProgress.duration)}</span>
+          </div>
+        </div>
+      )}
+
       {/* Controls */}
-      <div className="flex items-center justify-center gap-3 sm:gap-4 mb-5">
+      <div className="flex items-center justify-center gap-3 sm:gap-4 mb-5 shrink-0">
         <button
           onClick={() => handleSkip(-1)}
           className="p-2 sm:p-2.5 rounded-xl bg-card hover:bg-primary hover:text-primary-foreground
@@ -82,7 +110,7 @@ const MusicRoom: FC = () => {
       </div>
 
       {/* Volume */}
-      <div className="flex items-center gap-2.5 mb-5 px-2 sm:px-4">
+      <div className="flex items-center gap-2.5 mb-5 px-2 sm:px-4 shrink-0">
         <button onClick={() => setVolume(volume > 0 ? 0 : 0.7)} className="text-muted-foreground hover:text-primary transition-colors">
           {volume === 0 ? <VolumeX size={14} /> : <Volume2 size={14} />}
         </button>
@@ -99,7 +127,7 @@ const MusicRoom: FC = () => {
       </div>
 
       {/* Tracklist */}
-      <div className="space-y-1 max-h-36 sm:max-h-48 overflow-y-auto custom-scrollbar">
+      <div className="space-y-1 flex-1 min-h-0 overflow-y-auto custom-scrollbar pr-2">
         {playlist.map((track, i) => (
           <motion.button
             key={track.id}

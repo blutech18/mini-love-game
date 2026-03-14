@@ -46,6 +46,8 @@
     --comfort-sad: 345 40% 65%;
     --comfort-sleep: 260 30% 55%;
     --comfort-bad: 175 30% 55%;
+    --letter-warm: 30 65% 52%;
+    --letter-soft: 140 38% 48%;
 
     --font-display: 'Press Start 2P', cursive;
     --font-body: 'Quicksand', sans-serif;

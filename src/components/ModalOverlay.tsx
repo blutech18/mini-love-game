@@ -33,11 +33,11 @@ const ModalOverlay: FC<Props> = ({ children }) => {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 40, scale: 0.97 }}
         transition={{ type: "spring", damping: 30, stiffness: 350 }}
-        className="relative z-10 w-full sm:max-w-md md:max-w-lg max-h-[92vh] sm:max-h-[85vh] overflow-y-auto
+        className="relative z-10 w-full sm:max-w-md md:max-w-lg h-[90dvh] sm:h-[85vh] flex flex-col
                    rounded-t-2xl sm:rounded-2xl bg-card/95 backdrop-blur-sm
                    shadow-xl shadow-foreground/5
                    p-5 sm:p-6 md:p-7
-                   custom-scrollbar"
+                   overflow-hidden"
       >
         {/* Drag indicator on mobile */}
         <div className="sm:hidden flex justify-center mb-3">
@@ -52,7 +52,7 @@ const ModalOverlay: FC<Props> = ({ children }) => {
         >
           <X size={16} />
         </button>
-        <div className="animate-fade-in">
+        <div className="animate-fade-in flex flex-1 flex-col min-h-0 overflow-hidden h-full">
           {children}
         </div>
       </motion.div>

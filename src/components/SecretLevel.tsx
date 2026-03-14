@@ -7,8 +7,9 @@ const celebrationIcons = [Heart, Sparkles, Star, Zap, Heart];
 
 const SecretLevel: FC = () => {
   return (
-    <div className="text-center">
-      <motion.div
+    <div className="flex flex-col h-full text-center">
+      <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 flex flex-col justify-center">
+        <motion.div
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ type: "spring", damping: 10, stiffness: 100 }}
@@ -53,7 +54,8 @@ const SecretLevel: FC = () => {
             <Icon size={20} />
           </motion.div>
         ))}
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 };

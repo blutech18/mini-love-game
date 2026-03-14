@@ -22,92 +22,103 @@ const ComfortZone: FC = () => {
   };
 
   return (
-    <div>
-      <h2 className="font-pixel text-xs sm:text-sm text-primary mb-5 sm:mb-6 text-center flex items-center justify-center gap-2">
-        <HeartHandshake size={16} /> Comfort Zone
-      </h2>
-
-      <AnimatePresence mode="wait">
-        {!activeScenario ? (
-          <motion.div
-            key="buttons"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.25 }}
-            className="space-y-2.5 sm:space-y-3"
-          >
-            <p className="text-sm text-muted-foreground text-center mb-4 sm:mb-5 font-body leading-relaxed">
-              Hey, I'm here for you. What do you need right now?
-            </p>
-            {comfortScenarios.map((s, i) => (
-              <motion.button
-                key={s.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.3 }}
-                whileHover={{ scale: 1.02, x: 6 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => handleScenario(s)}
-                className={`group w-full p-4 rounded-xl ${colorMap[s.id]}
-                           hover:shadow-lg transition-all duration-300
-                           flex items-center gap-3 cursor-pointer active:scale-[0.98]`}
-              >
-                <div className="p-2 rounded-lg bg-background/15 group-hover:scale-110 transition-transform duration-300">
-                  <DynamicIcon name={s.icon} size={22} />
-                </div>
-                <span className="font-pixel text-[10px] sm:text-xs group-hover:tracking-wider transition-all duration-300">
-                  {s.title}
-                </span>
-              </motion.button>
-            ))}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="message"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "spring", damping: 25 }}
-            className="text-center"
-          >
-            <button
+    <div className="flex flex-col h-full">
+      <div className="relative flex items-center justify-center mb-5 sm:mb-6 shrink-0 min-h-[2rem]">
+        <AnimatePresence>
+          {activeScenario && (
+            <motion.button
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
               onClick={() => {
                 setActiveScenario(null);
                 setNightMode(false);
               }}
-              className="mb-4 text-xs text-muted-foreground hover:text-primary font-body font-semibold transition-all flex items-center gap-1.5 mx-auto
-                         hover:-translate-x-1 duration-200"
+              className="absolute left-0 text-xs text-muted-foreground hover:text-primary font-body font-semibold transition-all flex items-center gap-1.5
+                         hover:-translate-x-0.5 duration-200 z-10"
             >
-              <ArrowLeft size={14} /> Back
-            </button>
+              <ArrowLeft size={14} /> <span>Back</span>
+            </motion.button>
+          )}
+        </AnimatePresence>
+        <h2 className="font-pixel text-xs sm:text-sm text-primary flex items-center gap-2">
+          <HeartHandshake size={16} /> Comfort Zone
+        </h2>
+      </div>
+
+      <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
+        <AnimatePresence mode="wait">
+          {activeScenario ? (
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.15, type: "spring" }}
-              className="text-primary mb-4 flex justify-center"
-            >
-              <DynamicIcon name={activeScenario.icon} size={44} />
-            </motion.div>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
+              key="message"
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-foreground font-body leading-relaxed mb-4 text-sm sm:text-base"
+              exit={{ opacity: 0 }}
+              transition={{ type: "spring", damping: 25 }}
+              className="text-center"
             >
-              {activeScenario.message}
-            </motion.p>
-            <motion.p
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.15, type: "spring" }}
+                className="text-primary mb-4 flex justify-center"
+              >
+                <DynamicIcon name={activeScenario.icon} size={44} />
+              </motion.div>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-foreground font-body leading-relaxed mb-4 text-sm sm:text-base"
+              >
+                {activeScenario.message}
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="text-xs sm:text-sm text-muted-foreground font-body italic"
+              >
+                {activeScenario.submessage}
+              </motion.p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="buttons"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="text-xs sm:text-sm text-muted-foreground font-body italic"
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.25 }}
+              className="space-y-2.5 sm:space-y-3"
             >
-              {activeScenario.submessage}
-            </motion.p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <p className="text-sm text-muted-foreground text-center mb-4 sm:mb-5 font-body leading-relaxed">
+                Hey, I'm here for you. What do you need right now?
+              </p>
+              {comfortScenarios.map((s, i) => (
+                <motion.button
+                  key={s.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.3 }}
+                  whileHover={{ scale: 1.02, x: 6 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => handleScenario(s)}
+                  className={`group w-full p-4 rounded-xl ${colorMap[s.id]}
+                             hover:shadow-lg transition-all duration-300
+                             flex items-center gap-3 cursor-pointer active:scale-[0.98]`}
+                >
+                  <div className="p-2 rounded-lg bg-background/15 group-hover:scale-110 transition-transform duration-300">
+                    <DynamicIcon name={s.icon} size={22} />
+                  </div>
+                  <span className="font-pixel text-[10px] sm:text-xs group-hover:tracking-wider transition-all duration-300">
+                    {s.title}
+                  </span>
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

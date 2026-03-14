@@ -54,6 +54,8 @@ export default {
         "comfort-sad": "hsl(var(--comfort-sad))",
         "comfort-sleep": "hsl(var(--comfort-sleep))",
         "comfort-bad": "hsl(var(--comfort-bad))",
+        "letter-warm": "hsl(var(--letter-warm))",
+        "letter-soft": "hsl(var(--letter-soft))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

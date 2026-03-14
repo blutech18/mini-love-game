@@ -137,7 +137,7 @@ export const comfortScenarios: ComfortScenario[] = [
     message:
       "Hey, it's okay to not be okay. I'm right here with you, always. Take a deep breath. You are stronger than you think, braver than you feel, and loved more than you'll ever know.",
     submessage:
-      "Close your eyes. Imagine me holding you tight. Because even when I'm not there physically, my babi wraps around you like a warm blanket.",
+      "Close your eyes. Imagine me holding you tight. Because even when I'm not there physically, my love wraps around you like a warm blanket.",
     trackId: 3,
   },
   {

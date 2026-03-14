@@ -98,7 +98,7 @@ const HomeHub: FC = () => {
     openModal(id as ModalType);
   };
 
-  const welcomeText = "Hi babi, welcome to our little space on the internet…";
+  const welcomeText = "Hi babi, welcome to our little world…";
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12 relative overflow-hidden">
@@ -180,10 +180,12 @@ const NowPlayingIndicator: FC = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-full glass
-                 flex items-center gap-2 text-xs text-muted-foreground font-body
-                 shadow-lg shadow-foreground/5"
+      className="fixed bottom-4 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none"
     >
+      <div
+        className="flex items-center gap-2 text-xs text-muted-foreground font-body px-4 py-2 rounded-full glass
+                   shadow-lg shadow-foreground/5 pointer-events-auto"
+      >
       <div className="flex gap-0.5 items-end h-3">
         {[1, 2, 3].map((bar) => (
           <motion.div
@@ -195,6 +197,7 @@ const NowPlayingIndicator: FC = () => {
         ))}
       </div>
       <span>Now playing</span>
+      </div>
     </motion.div>
   );
 };

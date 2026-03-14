@@ -6,6 +6,8 @@ interface AudioState {
   currentTrackId: number | null;
   isPlaying: boolean;
   volume: number;
+  loop: boolean;
+  shuffle: boolean;
 }
 
 interface GameState extends AudioState {
@@ -22,6 +24,8 @@ interface GameState extends AudioState {
   resumeTrack: () => void;
   togglePlayPause: () => void;
   setVolume: (volume: number) => void;
+  setLoop: (loop: boolean) => void;
+  setShuffle: (shuffle: boolean) => void;
   stopAudio: () => void;
 
   // UI actions
@@ -46,6 +50,8 @@ export const useGameStore = create<GameState>()(
       currentTrackId: null,
       isPlaying: false,
       volume: 0.7,
+      loop: false,
+      shuffle: false,
 
       // UI
       activeModal: null,
@@ -75,6 +81,10 @@ export const useGameStore = create<GameState>()(
       },
 
       setVolume: (volume) => set({ volume: Math.max(0, Math.min(1, volume)) }),
+
+      setLoop: (loop) => set({ loop }),
+
+      setShuffle: (shuffle) => set({ shuffle }),
 
       stopAudio: () => set({ currentTrackId: null, isPlaying: false }),
 

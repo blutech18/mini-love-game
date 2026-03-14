@@ -12,7 +12,7 @@ import SecretLevel from "@/components/SecretLevel";
 import { AudioProgressProvider } from "@/contexts/AudioProgressContext";
 
 const App: FC = () => {
-  const { activeModal, currentTrackId, isPlaying, volume, nightMode } = useGameStore();
+  const { activeModal, currentTrackId, isPlaying, volume, nightMode, loop, shuffle, playTrack } = useGameStore();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [progress, setProgress] = useState({ currentTime: 0, duration: 0 });
 
@@ -62,6 +62,34 @@ const App: FC = () => {
     }
   }, [isPlaying, currentTrackId]);
 
+  // When track ends: repeat (loop), random next (shuffle), or sequential next
+  useEffect(() => {
+    const el = audioRef.current;
+    if (!el) return;
+    const onEnded = () => {
+      if (loop) {
+        el.currentTime = 0;
+        el.play().catch(() => {});
+        return;
+      }
+      const idx = currentTrackId ? playlist.findIndex((t) => t.id === currentTrackId) : -1;
+      let nextIdx: number;
+      if (shuffle) {
+        if (playlist.length <= 1) nextIdx = 0;
+        else {
+          let r = Math.floor(Math.random() * playlist.length);
+          while (r === idx && playlist.length > 1) r = Math.floor(Math.random() * playlist.length);
+          nextIdx = r;
+        }
+      } else {
+        nextIdx = idx < 0 ? 0 : (idx + 1) % playlist.length;
+      }
+      playTrack(playlist[nextIdx].id);
+    };
+    el.addEventListener("ended", onEnded);
+    return () => el.removeEventListener("ended", onEnded);
+  }, [currentTrackId, loop, shuffle, playTrack]);
+
   const audioProgressValue = { ...progress, seek };
 
   const modalContent: Record<string, ReactNode> = {
@@ -76,7 +104,7 @@ const App: FC = () => {
     <AudioProgressProvider value={audioProgressValue}>
       <div className={`min-h-screen transition-colors duration-700 ${nightMode ? "night-mode" : ""}`}>
         {/* Global audio element */}
-        <audio ref={audioRef} loop />
+        <audio ref={audioRef} />
 
         <HomeHub />
 

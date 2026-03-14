@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { playlist } from "@/data/content";
 import { useGameStore } from "@/store/useGameStore";
 import { useAudioProgress } from "@/contexts/AudioProgressContext";
-import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Music, Disc3 } from "lucide-react";
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Music, Disc3, Repeat, Shuffle } from "lucide-react";
 import DynamicIcon from "@/components/DynamicIcon";
 
 const formatTime = (seconds: number) => {
@@ -14,16 +14,36 @@ const formatTime = (seconds: number) => {
 };
 
 const MusicRoom: FC = () => {
-  const { currentTrackId, isPlaying, volume, playTrack, pauseTrack, resumeTrack, setVolume } =
+  const { currentTrackId, isPlaying, volume, loop, shuffle, playTrack, pauseTrack, resumeTrack, setVolume, setLoop, setShuffle } =
     useGameStore();
   const audioProgress = useAudioProgress();
 
   const currentIndex = playlist.findIndex((t) => t.id === currentTrackId);
   const currentTrack = currentIndex >= 0 ? playlist[currentIndex] : null;
 
+  const progressPercent =
+    audioProgress && audioProgress.duration && audioProgress.duration > 0
+      ? Math.min((audioProgress.currentTime / audioProgress.duration) * 100, 100)
+      : 0;
+
   const handleSkip = (dir: 1 | -1) => {
-    const idx = currentIndex < 0 ? 0 : (currentIndex + dir + playlist.length) % playlist.length;
-    playTrack(playlist[idx].id);
+    if (playlist.length === 0) return;
+    const idx = currentIndex < 0 ? 0 : currentIndex;
+
+    let nextIdx: number;
+    if (shuffle) {
+      if (playlist.length === 1) {
+        nextIdx = 0;
+      } else {
+        let r = Math.floor(Math.random() * playlist.length);
+        while (r === idx) r = Math.floor(Math.random() * playlist.length);
+        nextIdx = r;
+      }
+    } else {
+      nextIdx = (idx + dir + playlist.length) % playlist.length;
+    }
+
+    playTrack(playlist[nextIdx].id);
   };
 
   const handlePlayPause = () => {
@@ -33,6 +53,20 @@ const MusicRoom: FC = () => {
       pauseTrack();
     } else {
       resumeTrack();
+    }
+  };
+
+  const cyclePlayMode = () => {
+    // Order: no loop/shuffle -> loop -> shuffle -> back to none
+    if (!loop && !shuffle) {
+      setLoop(true);
+      setShuffle(false);
+    } else if (loop && !shuffle) {
+      setLoop(false);
+      setShuffle(true);
+    } else {
+      setLoop(false);
+      setShuffle(false);
     }
   };
 
@@ -65,16 +99,28 @@ const MusicRoom: FC = () => {
       </div>
 
       {/* Progress / Seek bar */}
-      {audioProgress && currentTrack && (
+      {audioProgress && (
         <div className="mb-5 shrink-0 px-2 sm:px-4">
           <input
             type="range"
             min={0}
-            max={audioProgress.duration || 100}
+            max={audioProgress.duration && audioProgress.duration > 0 ? audioProgress.duration : 1}
             step={0.1}
-            value={audioProgress.currentTime}
+            value={
+              Math.min(
+                audioProgress.currentTime,
+                audioProgress.duration && audioProgress.duration > 0 ? audioProgress.duration : 1
+              )
+            }
             onChange={(e) => audioProgress.seek(Number(e.target.value))}
-            className="w-full h-1.5 accent-primary cursor-pointer appearance-none bg-muted rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-sm"
+            disabled={!currentTrack}
+            className={`w-full h-1.5 accent-primary cursor-pointer appearance-none rounded-full
+                       [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3
+                       [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:cursor-pointer
+                       [&::-webkit-slider-thumb]:shadow-sm ${currentTrack ? "" : "opacity-50 cursor-default"}`}
+            style={{
+              background: `linear-gradient(to right, hsl(var(--primary)) ${progressPercent}%, hsl(var(--muted)) ${progressPercent}%)`,
+            }}
           />
           <div className="flex justify-between mt-1 text-[10px] text-muted-foreground font-body">
             <span>{formatTime(audioProgress.currentTime)}</span>
@@ -84,28 +130,50 @@ const MusicRoom: FC = () => {
       )}
 
       {/* Controls */}
-      <div className="flex items-center justify-center gap-3 sm:gap-4 mb-5 shrink-0">
+      <div className="relative flex items-center justify-center mb-5 shrink-0">
+        <div className="flex items-center justify-center gap-2 sm:gap-3">
+          <button
+            onClick={() => handleSkip(-1)}
+            className="p-2 sm:p-2.5 rounded-xl bg-card hover:bg-primary hover:text-primary-foreground
+                       transition-all duration-200 active:scale-90 hover:scale-105"
+          >
+            <SkipBack size={16} />
+          </button>
+          <button
+            onClick={handlePlayPause}
+            className="p-3 sm:p-3.5 rounded-2xl bg-primary text-primary-foreground
+                       hover:scale-108 active:scale-95 transition-all duration-200
+                       shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30"
+          >
+            {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+          </button>
+          <button
+            onClick={() => handleSkip(1)}
+            className="p-2 sm:p-2.5 rounded-xl bg-card hover:bg-primary hover:text-primary-foreground
+                       transition-all duration-200 active:scale-90 hover:scale-105"
+          >
+            <SkipForward size={16} />
+          </button>
+        </div>
         <button
-          onClick={() => handleSkip(-1)}
-          className="p-2 sm:p-2.5 rounded-xl bg-card hover:bg-primary hover:text-primary-foreground
-                     transition-all duration-200 active:scale-90 hover:scale-105"
+          onClick={cyclePlayMode}
+          className="absolute right-0 sm:right-2 p-1.5 sm:p-2 transition-transform duration-200 active:scale-90 hover:scale-105 text-muted-foreground hover:text-primary"
+          title={
+            loop ? "Loop current track" : shuffle ? "Shuffle (random next track)" : "No loop / sequential"
+          }
         >
-          <SkipBack size={16} />
-        </button>
-        <button
-          onClick={handlePlayPause}
-          className="p-3 sm:p-3.5 rounded-2xl bg-primary text-primary-foreground
-                     hover:scale-108 active:scale-95 transition-all duration-200
-                     shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30"
-        >
-          {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-        </button>
-        <button
-          onClick={() => handleSkip(1)}
-          className="p-2 sm:p-2.5 rounded-xl bg-card hover:bg-primary hover:text-primary-foreground
-                     transition-all duration-200 active:scale-90 hover:scale-105"
-        >
-          <SkipForward size={16} />
+          {shuffle ? (
+            <Shuffle size={16} />
+          ) : (
+            <>
+              <Repeat size={16} />
+              {!loop && (
+                <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                  <span className="block w-3.5 sm:w-4 h-px bg-muted-foreground/80 rotate-45" />
+                </span>
+              )}
+            </>
+          )}
         </button>
       </div>
 
